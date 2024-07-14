@@ -1,14 +1,18 @@
 import os
-from utils import chatgpt, image_recognition
+from utils import chatgpt, command_executor
 
 def main():
-    # ChatGPTの応答を取得
-    chat_response = chatgpt.get_response("Hello, ChatGPT!")
-    print(f"ChatGPT response: {chat_response}")
+    while True:
+        user_input = input("何をしたいですか？: ")
+        if user_input.lower() in ['exit', 'quit']:
+            break
 
-    # 画像認識の結果を取得
-    image_result = image_recognition.recognize_image("path/to/image.jpg")
-    print(f"Image recognition result: {image_result}")
+        command = chatgpt.generate_command(user_input)
+        if command:
+            confirm = input(f"次のコマンドを実行しますか？ {command} (YES/NO): ")
+            if confirm.lower() == 'yes':
+                result = command_executor.execute_command(command)
+                print(result)
 
 if __name__ == "__main__":
     main()
